@@ -1,0 +1,42 @@
+{
+    "services": {
+      "service1": {
+        "name": "Cuci Dasar",
+        "price": 25000,
+        "description": "Pembersihan dasar bagian luar sepatu dengan bahan khusus.",
+        "imageUrl": "/services/cuci-dasar.jpg"
+      },
+      "service2": {
+        "name": "Cuci Premium",
+        "price": 50000,
+        "description": "Pembersihan menyeluruh luar dalam termasuk deodorisasi.",
+        "imageUrl": "/services/cuci-premium.jpg"
+      },
+      "service3": {
+        "name": "Repaint & Restoration",
+        "price": 150000,
+        "description": "Perbaikan warna dan kondisi sepatu seperti baru.",
+        "imageUrl": "/services/repaint.jpg"
+      }
+    },
+    "testimonials": {
+      "testimonial1": {
+        "name": "Andi Wijaya",
+        "image": "/testimonials/person1.jpg",
+        "rating": 5,
+        "text": "Sepatu sneaker putih saya yang sudah kuning kembali bersih seperti baru. Proses trackingnya juga sangat membantu!"
+      },
+      "testimonial2": {
+        "name": "Budi Santoso",
+        "image": "/testimonials/person2.jpg",
+        "rating": 5,
+        "text": "Pelayanan cepat dan hasilnya memuaskan. Sekarang semua sepatu koleksi saya rutin dicuci di sini."
+      },
+      "testimonial3": {
+        "name": "Citra Dewi",
+        "image": "/testimonials/person3.jpg",
+        "rating": 4.5,
+        "text": "Sangat praktis bisa booking via website dan dijemput di rumah. Hasil cuciannya bersih dan wangi."
+      }
+    }
+  }
