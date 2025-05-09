@@ -5,12 +5,19 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/utils/supabase';
 import { Service } from '@/models/types';
 
+interface FormData {
+  name: string;
+  price: string;
+  description: string;
+  imageUrl: string;
+}
+
 export default function AdminServicesClient() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentService, setCurrentService] = useState<Partial<Service> | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     price: '',
     description: '',
@@ -18,27 +25,27 @@ export default function AdminServicesClient() {
   });
   const [error, setError] = useState('');
   const [isMounted, setIsMounted] = useState(false);
-  
+
   useEffect(() => {
     setIsMounted(true);
-    
+
     if (isMounted) {
       fetchServices();
     }
   }, [isMounted]);
-  
+
   const fetchServices = async () => {
     setLoading(true);
     setError('');
-    
+
     try {
       const { data, error } = await supabase
         .from('services')
         .select('*')
         .order('name');
-      
+
       if (error) throw error;
-      
+
       const servicesData = data.map(item => ({
         id: item.id,
         name: item.name,
@@ -46,7 +53,7 @@ export default function AdminServicesClient() {
         description: item.description,
         imageUrl: item.image_url
       })) as Service[];
-      
+
       setServices(servicesData);
     } catch (err: any) {
       console.error('Error fetching services:', err);
@@ -55,8 +62,8 @@ export default function AdminServicesClient() {
       setLoading(false);
     }
   };
-  
-  const handleOpenModal = (service = null) => {
+
+  const handleOpenModal = (service: Service | null = null) => {
     if (service) {
       setCurrentService(service);
       setFormData({
@@ -76,12 +83,13 @@ export default function AdminServicesClient() {
     }
     setIsModalOpen(true);
   };
-  
+
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setCurrentService(null);
   };
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -89,11 +97,11 @@ export default function AdminServicesClient() {
       [name]: value
     }));
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
+
     try {
       const serviceData = {
         name: formData.name,
@@ -101,24 +109,24 @@ export default function AdminServicesClient() {
         description: formData.description,
         image_url: formData.imageUrl
       };
-      
+
       if (currentService && currentService.id) {
         // Update existing service
         const { error } = await supabase
           .from('services')
           .update(serviceData)
           .eq('id', currentService.id);
-          
+
         if (error) throw error;
       } else {
         // Add new service
         const { error } = await supabase
           .from('services')
           .insert([serviceData]);
-          
+
         if (error) throw error;
       }
-      
+
       handleCloseModal();
       fetchServices();
     } catch (err: any) {
@@ -126,19 +134,19 @@ export default function AdminServicesClient() {
       setError(`Error saat menyimpan layanan: ${err.message}`);
     }
   };
-  
+
   const handleDelete = async (id: number) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus layanan ini?')) {
       setError('');
-      
+
       try {
         const { error } = await supabase
           .from('services')
           .delete()
           .eq('id', id);
-          
+
         if (error) throw error;
-        
+
         fetchServices();
       } catch (err: any) {
         console.error('Error deleting service:', err);
@@ -146,29 +154,29 @@ export default function AdminServicesClient() {
       }
     }
   };
-  
+
   if (!isMounted) {
     return null;
   }
-  
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold">Manajemen Layanan</h1>
-        <button 
+        <button
           className="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-md"
           onClick={() => handleOpenModal()}
         >
           <i className="fas fa-plus mr-2"></i> Tambah Layanan
         </button>
       </div>
-      
+
       {error && (
         <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-lg">
           {error}
         </div>
       )}
-      
+
       {loading ? (
         <div className="flex justify-center my-12">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -211,24 +219,24 @@ export default function AdminServicesClient() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="h-10 w-10 flex-shrink-0">
-                          <img 
-                            className="h-10 w-10 rounded-full object-cover" 
-                            src={service.imageUrl || '/placeholder.jpg'} 
+                          <img
+                            className="h-10 w-10 rounded-full object-cover"
+                            src={service.imageUrl || '/placeholder.jpg'}
                             alt={service.name}
                           />
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button 
+                      <button
                         className="text-primary hover:text-secondary mr-3"
                         onClick={() => handleOpenModal(service)}
                       >
                         Edit
                       </button>
-                      <button 
+                      <button
                         className="text-red-600 hover:text-red-800"
-                        onClick={() => handleDelete(service.id)}
+                        onClick={() => handleDelete(Number(service.id))} 
                       >
                         Hapus
                       </button>
@@ -246,7 +254,7 @@ export default function AdminServicesClient() {
           </table>
         </div>
       )}
-      
+
       {/* Modal Form */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -256,7 +264,7 @@ export default function AdminServicesClient() {
                 {currentService ? 'Edit Layanan' : 'Tambah Layanan Baru'}
               </h3>
             </div>
-            
+
             <form onSubmit={handleSubmit}>
               <div className="p-6">
                 <div className="mb-4">
@@ -273,7 +281,7 @@ export default function AdminServicesClient() {
                     required
                   />
                 </div>
-                
+
                 <div className="mb-4">
                   <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
                     Harga (Rp)
@@ -288,7 +296,7 @@ export default function AdminServicesClient() {
                     required
                   />
                 </div>
-                
+
                 <div className="mb-4">
                   <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
                     Deskripsi
@@ -303,7 +311,7 @@ export default function AdminServicesClient() {
                     required
                   ></textarea>
                 </div>
-                
+
                 <div className="mb-4">
                   <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 mb-1">
                     URL Gambar
@@ -319,7 +327,7 @@ export default function AdminServicesClient() {
                   />
                 </div>
               </div>
-              
+
               <div className="px-6 py-3 bg-gray-50 flex justify-end space-x-3 rounded-b-lg">
                 <button
                   type="button"
