@@ -46,8 +46,9 @@ const Header: React.FC = () => {
           <Link href="#home" className="font-medium hover:text-primary transition">Beranda</Link>
           <Link href="#services" className="font-medium hover:text-primary transition">Layanan</Link>
           <Link href="#tracking" className="font-medium hover:text-primary transition">Tracking</Link>
-          <Link href="#services" className="font-medium hover:text-primary transition">Harga</Link>
           <Link href="#testimonials" className="font-medium hover:text-primary transition">Testimoni</Link>
+          <Link href="#carbon-calculator" className="font-medium hover:text-primary transition">Jejak Karbon</Link>
+          <Link href="#contact" className="font-medium hover:text-primary transition">Hubungi Kami</Link>       
         </nav>
         <div className="flex items-center space-x-4">
           <Link href="#booking" className="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-lg font-medium transition">

@@ -11,7 +11,10 @@ import Booking from '@/components/home/Booking';
 import Testimonials from '@/components/home/Testimonials';
 import CTA from '@/components/home/CTA';
 import Footer from '@/components/layout/Footer';
+import CarbonFootprintCalculator from '@/components/home/CarbonFootprintCalculator';
+import ContactSection from '@/components/home/ContactSection';
 import FontAwesomeScript from '@/components/FontAwesomeScript';
+
 
 export default function HomeClient() {
   const [isMounted, setIsMounted] = useState(false);
@@ -57,7 +60,19 @@ export default function HomeClient() {
         <Services />
         <Tracking />
         <Booking />
+        <section id="carbon-calculator" className="py-16 bg-gray-50">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold mb-4">Jejak Karbon</h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  Hitung kontribusimu dalam penyelamatan lingkungan dengan cuci sepatu di SikaCling
+                </p>
+              </div>
+              <CarbonFootprintCalculator />
+            </div>
+          </section>
         <Testimonials />
+        <ContactSection />
         <CTA />
       </main>
       <Footer />
