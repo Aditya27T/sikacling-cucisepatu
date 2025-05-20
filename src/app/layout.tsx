@@ -1,6 +1,7 @@
 // app/layout.tsx
 import '../styles/globals.css';
 import FirebaseProvider from '@/components/FirebaseProvider';
+import ChatBot from '@/components/ChatBot';
 
 export const metadata = {
   title: 'SikaCling | Jasa Cuci Sepatu Premium',
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <FirebaseProvider>
           {children}
+          <ChatBot />
         </FirebaseProvider>
       </body>
     </html>
